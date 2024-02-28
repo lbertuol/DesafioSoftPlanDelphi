@@ -78,7 +78,6 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
       ShowHint = True
       TabOrder = 1
       OnClick = btnPesquisarClick
-      ExplicitHeight = 33
     end
   end
   object GroupBox2: TGroupBox
@@ -89,41 +88,40 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
     Align = alClient
     Caption = ' Resultados '
     TabOrder = 1
-    ExplicitTop = 84
-    ExplicitHeight = 358
-    object LstResultados: TListView
+    object lstResultado: TListView
       Left = 2
-      Top = 17
+      Top = 42
       Width = 624
-      Height = 329
+      Height = 304
       Align = alClient
       Columns = <
         item
-          MaxWidth = -1
-          Width = -1
-          WidthType = (
-            -1)
+          AutoSize = True
+          Caption = 'Resultado'
         end>
       ColumnClick = False
+      FullDrag = True
       GridLines = True
+      TileColumns = <
+        item
+          Order = 1
+        end>
       RowSelect = True
-      SortType = stText
       TabOrder = 0
-      ViewStyle = vsList
-      ExplicitHeight = 339
+      ViewStyle = vsReport
     end
-    object ListBox1: TListBox
+    object btnCarregarDados: TButton
       Left = 2
       Top = 17
       Width = 624
-      Height = 329
-      Align = alClient
-      ItemHeight = 15
+      Height = 25
+      Align = alTop
+      Caption = 'Carregar Dados'
       TabOrder = 1
-      ExplicitLeft = 152
-      ExplicitTop = 128
-      ExplicitWidth = 121
-      ExplicitHeight = 97
+      OnClick = btnCarregarDadosClick
+      ExplicitLeft = 312
+      ExplicitTop = 16
+      ExplicitWidth = 75
     end
   end
 end

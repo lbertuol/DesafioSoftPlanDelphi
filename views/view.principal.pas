@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
-  CommCtrl, Vcl.ExtCtrls, UConsultaDeEndereco;
+  CommCtrl, Vcl.ExtCtrls, UConsultaDeEndereco, System.JSON;
 
 type
 
@@ -16,15 +16,17 @@ type
     edtConteudoPesquisa: TEdit;
     btnPesquisar: TButton;
     GroupBox2: TGroupBox;
-    LstResultados: TListView;
-    ListBox1: TListBox;
     Label2: TLabel;
+    lstResultado: TListView;
+    btnCarregarDados: TButton;
     procedure btnPesquisarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure btnCarregarDadosClick(Sender: TObject);
   private
     { Private declarations }
     consultaDeEndereco: TConsultaDeEndereco;
+    procedure ConsultarDadosECarregarListView;
   public
     { Public declarations }
   end;
@@ -37,6 +39,11 @@ implementation
 {$R *.dfm}
 
 { TFrmConsultaEnderecos }
+
+procedure TFrmConsultaEnderecos.btnCarregarDadosClick(Sender: TObject);
+begin
+  ConsultarDadosECarregarListView;
+end;
 
 procedure TFrmConsultaEnderecos.btnPesquisarClick(Sender: TObject);
 begin
@@ -52,6 +59,22 @@ begin
     MessageDlg('Nenhum registro foi encontrado através do filtro informado.', mtInformation, [mbOk], 0);
     edtConteudoPesquisa.SetFocus;
     Exit;
+  end;
+
+  ConsultarDadosECarregarListView;
+end;
+
+procedure TFrmConsultaEnderecos.ConsultarDadosECarregarListView;
+var
+  records: TJSONArray;
+  item: TListItem;
+  i: Integer;
+begin
+  records := consultaDeEndereco.RetornarDados;
+  lstResultado.Items.Clear;
+  for i := 0 to records.Size - 1 do
+  begin
+    lstResultado.Items.Insert(1).Caption := records.Get(i).ToString;
   end;
 end;
 

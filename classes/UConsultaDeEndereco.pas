@@ -4,7 +4,7 @@ interface
 
 uses
   URabbitMQ, UClientRequest, System.SysUtils, System.JSON, System.Variants,
-  System.Classes, Vcl.Dialogs;
+  System.Classes, Vcl.Dialogs, UDataBase;
 
 type
   rabbitMq = class(TRabbitMQ)
@@ -20,6 +20,7 @@ type
     private
       const TEMPO_LEITURA = 900;
       const NOME_FILA = 'DesafioSoftplanDelphi';
+      const COLLECTION_NAME = 'enderecos';
       var
         filaRabbitMQ: rabbitMq;
 
@@ -27,6 +28,7 @@ type
     public
       function SolicitarConsulta(filtroPesquisa: String): Boolean;
       function ExecutarConsulta(filtroPesquisa: String): Boolean;
+      function RetornarDados(): TJSONArray;
       constructor Create;
       destructor Destroy; override;
   End;
@@ -69,8 +71,36 @@ begin
 end;
 
 procedure TConsultaDeEndereco.PopularMensagemRecebidaNoDB(mensagem: String);
+var
+  database: TDataBase;
 begin
-  ShowMessage(mensagem);
+  database := TDataBase.Create;
+  try
+    database.ConectarDatabase;
+
+    database.InserirDados(COLLECTION_NAME, mensagem);
+  finally
+    database.DesconectarDatabase;
+    FreeAndNil(database);
+  end;
+end;
+
+function TConsultaDeEndereco.RetornarDados: TJSONArray;
+var
+  database: TDataBase;
+  objetoJson: TJSONObject;
+begin
+  database := TDataBase.Create;
+  try
+    database.ConectarDatabase;
+
+    result := database.BuscarDados(COLLECTION_NAME);
+
+  finally
+    database.DesconectarDatabase;
+    FreeAndNil(database);
+  end;
+
 end;
 
 function TConsultaDeEndereco.SolicitarConsulta(filtroPesquisa: String): Boolean;

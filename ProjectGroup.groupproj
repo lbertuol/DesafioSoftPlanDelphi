@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{A076C5BB-11A8-4962-868B-BDBA6064784E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="DesafioSoftplanDelphi.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="D:\Documentos\Embarcadero\Studio\Projects\ComponentMongoDB.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="DesafioSoftplanDelphi">
+        <MSBuild Projects="DesafioSoftplanDelphi.dproj"/>
+    </Target>
+    <Target Name="DesafioSoftplanDelphi:Clean">
+        <MSBuild Projects="DesafioSoftplanDelphi.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DesafioSoftplanDelphi:Make">
+        <MSBuild Projects="DesafioSoftplanDelphi.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ComponentMongoDB">
+        <MSBuild Projects="D:\Documentos\Embarcadero\Studio\Projects\ComponentMongoDB.dproj"/>
+    </Target>
+    <Target Name="ComponentMongoDB:Clean">
+        <MSBuild Projects="D:\Documentos\Embarcadero\Studio\Projects\ComponentMongoDB.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ComponentMongoDB:Make">
+        <MSBuild Projects="D:\Documentos\Embarcadero\Studio\Projects\ComponentMongoDB.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="DesafioSoftplanDelphi;ComponentMongoDB"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="DesafioSoftplanDelphi:Clean;ComponentMongoDB:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="DesafioSoftplanDelphi:Make;ComponentMongoDB:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -15,9 +15,9 @@ uses
 type
   TDM = class(TDataModule)
     FDConnection1: TFDConnection;
-    FDMongoQuery1: TFDMongoQuery;
     FDPhysMongoDriverLink1: TFDPhysMongoDriverLink;
-    FDMongoDataSet1: TFDMongoDataSet;
+    FDManager1: TFDManager;
+    FDMongoQuery1: TFDMongoQuery;
   private
     { Private declarations }
   public

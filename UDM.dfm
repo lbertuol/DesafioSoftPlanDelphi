@@ -3,25 +3,28 @@ object DM: TDM
   Width = 640
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'Server=192.168.1.30'
-      'User_Name=root'
+      'DriverID=Mongo'
       'Database=DesafioSoftplanDelphi'
-      'DriverID=Mongo')
-    Left = 112
-    Top = 164
+      'Server=127.0.0.1'
+      'Port=27017')
+    Left = 224
+    Top = 184
+  end
+  object FDPhysMongoDriverLink1: TFDPhysMongoDriverLink
+    Left = 232
+    Top = 328
+  end
+  object FDManager1: TFDManager
+    FormatOptions.AssignedValues = [fvMapRules]
+    FormatOptions.OwnMapRules = True
+    FormatOptions.MapRules = <>
+    Active = True
+    Left = 400
+    Top = 272
   end
   object FDMongoQuery1: TFDMongoQuery
     Connection = FDConnection1
-    Left = 112
-    Top = 228
-  end
-  object FDPhysMongoDriverLink1: TFDPhysMongoDriverLink
-    Left = 112
-    Top = 284
-  end
-  object FDMongoDataSet1: TFDMongoDataSet
-    Connection = FDConnection1
-    Left = 112
-    Top = 340
+    Left = 536
+    Top = 392
   end
 end
