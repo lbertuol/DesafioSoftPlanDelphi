@@ -108,12 +108,8 @@
         <DCCReference Include="classes\UDataBase.pas"/>
         <DCCReference Include="classes\URabbitMQ.pas"/>
         <DCCReference Include="features\StompClient.pas"/>
-        <DCCReference Include="UDM.pas">
-            <Form>DM</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
         <DCCReference Include="classes\UConsultaDeEndereco.pas"/>
+        <DCCReference Include="classes\UHelpers.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

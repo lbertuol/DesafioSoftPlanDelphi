@@ -119,9 +119,6 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
       Caption = 'Carregar Dados'
       TabOrder = 1
       OnClick = btnCarregarDadosClick
-      ExplicitLeft = 312
-      ExplicitTop = 16
-      ExplicitWidth = 75
     end
   end
 end

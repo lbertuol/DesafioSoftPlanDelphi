@@ -3,7 +3,7 @@ unit UDataBase;
 interface
 
 uses
-  System.Classes, System.SysUtils, UComponentMongoDB, System.JSON;
+  System.Classes, System.SysUtils, UComponentMongoDB, System.JSON, UHelpers, Vcl.Forms;
 
 type
   TDataBase = Class
@@ -16,6 +16,8 @@ type
     FComponentMongoDB: TComponentMongoDB;
 
     procedure ObterConfiguracoesDB;
+    const
+      secaoConfiguracoes = 'DATABASE';
   public
     property DataBaseName: String read FDataBaseName write FDataBaseName;
     property UserName: String read FUserName write FUserName;
@@ -72,12 +74,16 @@ begin
 end;
 
 procedure TDataBase.ObterConfiguracoesDB;
+var
+  caminhoArqIni: String;
 begin
-  FDataBaseName := 'DesafioSoftplanDelphi';
-  FUserName := '';
-  FPassword := '';
-  FServerHost := '127.0.0.1';
-  FPort := 27017;
+  caminhoArqIni := IncludeTrailingPathDelimiter(ExtractFileDir(GetCurrentDir)) + THelpers.arquivoIniConfiguracoes;
+
+  FDataBaseName := THelpers.LerArquivoIni(caminhoArqIni, secaoConfiguracoes, 'DataBaseName');
+  FUserName := THelpers.LerArquivoIni(caminhoArqIni, secaoConfiguracoes, 'UserName');
+  FPassword := THelpers.LerArquivoIni(caminhoArqIni, secaoConfiguracoes, 'Password');
+  FServerHost := THelpers.LerArquivoIni(caminhoArqIni, secaoConfiguracoes, 'ServerHost');
+  FPort := StrToIntDef(THelpers.LerArquivoIni(caminhoArqIni, secaoConfiguracoes, 'Port'), 27017);
 end;
 
 end.

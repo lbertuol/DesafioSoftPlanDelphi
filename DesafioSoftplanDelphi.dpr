@@ -7,8 +7,8 @@ uses
   UDataBase in 'classes\UDataBase.pas',
   URabbitMQ in 'classes\URabbitMQ.pas',
   StompClient in 'features\StompClient.pas',
-  UDM in 'UDM.pas' {DM: TDataModule},
-  UConsultaDeEndereco in 'classes\UConsultaDeEndereco.pas';
+  UConsultaDeEndereco in 'classes\UConsultaDeEndereco.pas',
+  UHelpers in 'classes\UHelpers.pas';
 
 {$R *.res}
 
@@ -16,6 +16,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFrmConsultaEnderecos, FrmConsultaEnderecos);
-  Application.CreateForm(TDM, DM);
   Application.Run;
 end.

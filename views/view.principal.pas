@@ -9,7 +9,6 @@ uses
 
 type
 
-
   TFrmConsultaEnderecos = class(TForm)
     Label1: TLabel;
     GroupBox1: TGroupBox;
@@ -59,9 +58,9 @@ begin
     MessageDlg('Nenhum registro foi encontrado através do filtro informado.', mtInformation, [mbOk], 0);
     edtConteudoPesquisa.SetFocus;
     Exit;
-  end;
-
-  ConsultarDadosECarregarListView;
+  end
+  else
+    ConsultarDadosECarregarListView;
 end;
 
 procedure TFrmConsultaEnderecos.ConsultarDadosECarregarListView;

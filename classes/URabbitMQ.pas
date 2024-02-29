@@ -3,7 +3,7 @@ unit URabbitMQ;
 interface
 
 uses
-  StompClient, System.SysUtils;
+  StompClient, System.SysUtils, UHelpers;
 
 type
   TRabbitMQ = Class
@@ -14,7 +14,10 @@ type
       FFila: String;
       FTimeOut: integer;
     public
-      FStompFrameReceive: IStompFrame;
+      const
+        secaoConfiguracoes = 'RABBITMQ';
+      var
+        FStompFrameReceive: IStompFrame;
       property StompFrame: IStompFrame read FStompFrame write FStompFrame;
       property Client: IStompClient read FClient write FClient;
       property TimeOut: integer read FTimeOut write FTimeOut;
@@ -40,7 +43,14 @@ begin
 end;
 
 constructor TRabbitMQ.Create(fila: string; timeout: integer);
+var
+  caminhoArqIni, hostRabbitMQ: String;
+  portaRabbitMQ: Integer;
 begin
+  caminhoArqIni := IncludeTrailingPathDelimiter(ExtractFileDir(GetCurrentDir)) + THelpers.arquivoIniConfiguracoes;
+  hostRabbitMQ := THelpers.LerArquivoIni(caminhoArqIni, secaoConfiguracoes, 'Host');
+  portaRabbitMQ := StrToIntDef(THelpers.LerArquivoIni(caminhoArqIni, secaoConfiguracoes, 'Port'), 61613);
+
   if (Trim(fila) = '') then
     raise Exception.Create('Fila deverá ser informada.');
 
@@ -53,6 +63,10 @@ begin
   FClient.Connect;
 
   FClient.SetOnBeforeSendFrame(AntesEnviarFrame);
+  FClient.SetHost(hostRabbitMQ);
+  FClient.SetPort(portaRabbitMQ);
+  FClient.Disconnect;
+  FClient.Connect;
 
   FStompFrame := StompUtils.NewFrame();
 
@@ -64,6 +78,10 @@ begin
 
   FStompClient := StompUtils.StompClient;
   FStompClient.SetOnBeforeSendFrame(AntesEnviarFrame);
+  FStompClient.SetHost(hostRabbitMQ);
+  FStompClient.SetPort(portaRabbitMQ);
+  FStompClient.Disconnect;
+  FStompClient.Connect;
 end;
 
 destructor TRabbitMQ.Destroy;
