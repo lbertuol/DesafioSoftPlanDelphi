@@ -1,8 +1,8 @@
-#Informações Pessoais
+# Informações Pessoais
 **Nome:** Luciano Bertuol
 **E-mail:** <bertuolluciano@gmail.com>
 
-#Detalhes Projeto
+# Detalhes Projeto
 **Execução:**
 Na pasta deverá conter o arquivo Configuracoes.ini, onde neste contemplará as configurações da conexão com o MongoDB e o RabbitMQ, apenas configurar e rodar a aplicação.
 
