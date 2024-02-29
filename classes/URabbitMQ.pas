@@ -60,13 +60,11 @@ begin
   FTimeOut := timeout;
 
   FClient := StompUtils.StompClient;
+  FClient.SetHost(hostRabbitMQ);
+  FClient.SetPort(portaRabbitMQ);
   FClient.Connect;
 
   FClient.SetOnBeforeSendFrame(AntesEnviarFrame);
-  FClient.SetHost(hostRabbitMQ);
-  FClient.SetPort(portaRabbitMQ);
-  FClient.Disconnect;
-  FClient.Connect;
 
   FStompFrame := StompUtils.NewFrame();
 
@@ -77,11 +75,10 @@ begin
   VerificarMensagem;
 
   FStompClient := StompUtils.StompClient;
-  FStompClient.SetOnBeforeSendFrame(AntesEnviarFrame);
   FStompClient.SetHost(hostRabbitMQ);
   FStompClient.SetPort(portaRabbitMQ);
-  FStompClient.Disconnect;
-  FStompClient.Connect;
+
+  FStompClient.SetOnBeforeSendFrame(AntesEnviarFrame);
 end;
 
 destructor TRabbitMQ.Destroy;

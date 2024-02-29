@@ -46,6 +46,7 @@ begin
     except
       on E: Exception do
       begin
+        retorno := nil;
         raise Exception.Create('Error: ' + E.Message);
       end;
     end;

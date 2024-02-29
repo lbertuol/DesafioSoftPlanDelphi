@@ -8,7 +8,6 @@ uses
   CommCtrl, Vcl.ExtCtrls, UConsultaDeEndereco, System.JSON;
 
 type
-
   TFrmConsultaEnderecos = class(TForm)
     Label1: TLabel;
     GroupBox1: TGroupBox;
@@ -53,14 +52,12 @@ begin
     Exit;
   end;
 
-  if (not (consultaDeEndereco.ExecutarConsulta(edtConteudoPesquisa.Text))) then
+  if (not (consultaDeEndereco.SolicitarConsulta(edtConteudoPesquisa.Text))) then
   begin
-    MessageDlg('Nenhum registro foi encontrado através do filtro informado.', mtInformation, [mbOk], 0);
+    MessageDlg('Não foi possível registrar a solicitação.', mtInformation, [mbOk], 0);
     edtConteudoPesquisa.SetFocus;
     Exit;
-  end
-  else
-    ConsultarDadosECarregarListView;
+  end;
 end;
 
 procedure TFrmConsultaEnderecos.ConsultarDadosECarregarListView;
@@ -70,6 +67,7 @@ var
   i: Integer;
 begin
   records := consultaDeEndereco.RetornarDados;
+
   lstResultado.Items.Clear;
   for i := 0 to records.Size - 1 do
   begin

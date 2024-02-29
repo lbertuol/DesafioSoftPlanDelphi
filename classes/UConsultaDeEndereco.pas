@@ -23,9 +23,10 @@ type
       const COLLECTION_NAME = 'enderecos';
       var
         filaRabbitMQ: rabbitMq;
-
+        teste: String;
       procedure PopularMensagemRecebidaNoDB(mensagem: String);
     public
+      procedure NotificarFalhaRequisicao; virtual;
       function SolicitarConsulta(filtroPesquisa: String): Boolean;
       function ExecutarConsulta(filtroPesquisa: String): Boolean;
       function RetornarDados(): TJSONArray;
@@ -58,8 +59,8 @@ var
   retorno: TJSONObject;
   filtroComTratamento: String;
 begin
-  filtroComTratamento := StringReplace(filtroComTratamento, ', ', '/', [rfReplaceAll, rfIgnoreCase]);
   filtroComTratamento := StringReplace(Trim(filtroPesquisa), ',', '/', [rfReplaceAll, rfIgnoreCase]);
+  filtroComTratamento := StringReplace(filtroComTratamento, ', ', '/', [rfReplaceAll, rfIgnoreCase]);
   retorno := TClienteRequest.ExecutarGet('https://viacep.com.br/ws/' + filtroComTratamento + '/json');
 
   result := false;
@@ -67,7 +68,14 @@ begin
   begin
     PopularMensagemRecebidaNoDB(retorno.ToString);
     result := true;
-  end;
+  end
+  else
+    MessageDlg('Não foi possível encontrar registros com o filtro: ' + filtroComTratamento, mtInformation, [mbOk], 0);
+end;
+
+procedure TConsultaDeEndereco.NotificarFalhaRequisicao;
+begin
+  inherited;
 end;
 
 procedure TConsultaDeEndereco.PopularMensagemRecebidaNoDB(mensagem: String);
