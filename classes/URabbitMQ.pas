@@ -3,7 +3,7 @@ unit URabbitMQ;
 interface
 
 uses
-  StompClient, System.SysUtils, UHelpers;
+  StompClient, System.SysUtils, UHelpers, System.Classes;
 
 type
   TRabbitMQ = Class
@@ -13,6 +13,7 @@ type
       FClient: IStompClient;
       FFila: String;
       FTimeOut: integer;
+      FLStop: boolean;
     public
       const
         secaoConfiguracoes = 'RABBITMQ';
@@ -22,14 +23,15 @@ type
       property StompFrame: IStompFrame read FStompFrame write FStompFrame;
       property Client: IStompClient read FClient write FClient;
       property TimeOut: integer read FTimeOut write FTimeOut;
+      property LStop: boolean read FLStop write FLStop;
 
       function EnviarMensagem(mensagem: String): boolean;
       function AssinarLeituraMensagem: boolean;
       function ReceberMensagens(): String;
 
       procedure AntesEnviarFrame(AFrame: IStompFrame); virtual;
-      procedure AposReceberMensagem(mensagem: String); virtual;
-      procedure VerificarMensagem; virtual; abstract;
+      procedure AposReceberMensagem(mensagem: String); virtual; abstract;
+      procedure VerificarMensagem; virtual;
       constructor Create(fila: string; timeout: integer);
       destructor Destroy; override;
   End;
@@ -118,9 +120,31 @@ begin
   AposReceberMensagem(result);
 end;
 
-procedure TRabbitMQ.AposReceberMensagem(mensagem: String);
+procedure TRabbitMQ.VerificarMensagem;
 begin
-  inherited;
+TThread.CreateAnonymousThread(
+  procedure
+    var
+      lMessage: string;
+  begin
+    while True do
+    begin
+      if FLStop then
+        break;
+      try
+          if FClient.Receive(FStompFrameReceive, TimeOut - 10) then
+          begin
+            TThread.Synchronize(nil,
+            procedure
+            begin
+              ReceberMensagens;
+            end);
+          end;
+      finally
+        sleep(FTimeOut);
+      end;
+    end;
+  end).Start;
 end;
 
 function TRabbitMQ.AssinarLeituraMensagem: boolean;

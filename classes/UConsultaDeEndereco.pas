@@ -10,11 +10,8 @@ uses
 type
   rabbitMq = class(TRabbitMQ)
     private
-    var
-      LStop: boolean;
     public
       procedure AposReceberMensagem(mensagem: String); override;
-      procedure VerificarMensagem(); override;
   end;
 
   TConsultaDeEndereco = Class
@@ -143,33 +140,6 @@ end;
 function TConsultaDeEndereco.SolicitarConsulta(filtroPesquisa: String): Boolean;
 begin
   result := filaRabbitMQ.EnviarMensagem(filtroPesquisa);
-end;
-
-procedure rabbitMq.VerificarMensagem;
-begin
-  TThread.CreateAnonymousThread(
-  procedure
-    var
-      lMessage: string;
-  begin
-    while True do
-    begin
-      if LStop then
-        break;
-      try
-          if Client.Receive(FStompFrameReceive, TimeOut - 10) then
-          begin
-            TThread.Synchronize(nil,
-            procedure
-            begin
-              ReceberMensagens;
-            end);
-          end;
-      finally
-        sleep(TimeOut);
-      end;
-    end;
-  end).Start;
 end;
 
 procedure rabbitMq.AposReceberMensagem(mensagem: String);
