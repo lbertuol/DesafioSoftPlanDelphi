@@ -3,7 +3,7 @@ unit UDataBase;
 interface
 
 uses
-  System.Classes, System.SysUtils, UComponentMongoDB, System.JSON, UHelpers, Vcl.Forms;
+  System.Classes, System.SysUtils, UComponentMongoDB, System.JSON, UHelpers;
 
 type
   TDataBase = Class
@@ -15,9 +15,10 @@ type
     FPort: Integer;
     FComponentMongoDB: TComponentMongoDB;
 
-    procedure ObterConfiguracoesDB;
     const
       secaoConfiguracoes = 'DATABASE';
+
+    procedure ObterConfiguracoesDB;
   public
     property DataBaseName: String read FDataBaseName write FDataBaseName;
     property UserName: String read FUserName write FUserName;
@@ -48,14 +49,14 @@ end;
 
 procedure TDataBase.ConectarDatabase;
 begin
- FComponentMongoDB := TComponentMongoDB.Create(nil);
- ObterConfiguracoesDB;
- FComponentMongoDB.DataBaseName := FDataBaseName;
- FComponentMongoDB.UserName := FUserName;
- FComponentMongoDB.Password := FPassword;
- FComponentMongoDB.ServerHost := FServerHost;
- FComponentMongoDB.Port := FPort;
- FComponentMongoDB.ConectarBancoDeDados;
+  FComponentMongoDB := TComponentMongoDB.Create(nil);
+  ObterConfiguracoesDB;
+  FComponentMongoDB.DataBaseName := FDataBaseName;
+  FComponentMongoDB.UserName := FUserName;
+  FComponentMongoDB.Password := FPassword;
+  FComponentMongoDB.ServerHost := FServerHost;
+  FComponentMongoDB.Port := FPort;
+  FComponentMongoDB.ConectarBancoDeDados;
 end;
 
 procedure TDataBase.DesconectarDatabase;

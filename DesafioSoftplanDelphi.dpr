@@ -8,7 +8,8 @@ uses
   URabbitMQ in 'classes\URabbitMQ.pas',
   StompClient in 'features\StompClient.pas',
   UConsultaDeEndereco in 'classes\UConsultaDeEndereco.pas',
-  UHelpers in 'classes\UHelpers.pas';
+  UHelpers in 'classes\UHelpers.pas',
+  URetorno in 'classes\URetorno.pas';
 
 {$R *.res}
 

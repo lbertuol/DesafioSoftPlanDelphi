@@ -3,7 +3,7 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
   Top = 0
   Caption = 'Desafio Softplan  Delphi - Consulta Endere'#231'o'
   ClientHeight = 442
-  ClientWidth = 628
+  ClientWidth = 856
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,10 +13,10 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   TextHeight = 15
-  object Label1: TLabel
+  object lblTitulo: TLabel
     Left = 0
     Top = 0
-    Width = 628
+    Width = 856
     Height = 32
     Align = alTop
     Alignment = taCenter
@@ -29,18 +29,19 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
     ParentFont = False
     ExplicitWidth = 185
   end
-  object GroupBox1: TGroupBox
+  object GbPesquisa: TGroupBox
     Left = 0
     Top = 32
-    Width = 628
+    Width = 856
     Height = 62
     Align = alTop
     Caption = ' Pesquisa '
     TabOrder = 0
-    object Label2: TLabel
+    ExplicitWidth = 628
+    object lblDica: TLabel
       Left = 2
       Top = 47
-      Width = 624
+      Width = 852
       Height = 13
       Align = alBottom
       Caption = 
@@ -57,17 +58,18 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
     object edtConteudoPesquisa: TEdit
       Left = 2
       Top = 17
-      Width = 549
+      Width = 777
       Height = 30
       Hint = 'Informe o conte'#250'do'
       Align = alClient
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      ExplicitWidth = 549
       ExplicitHeight = 23
     end
     object btnPesquisar: TButton
-      Left = 551
+      Left = 779
       Top = 17
       Width = 75
       Height = 30
@@ -78,26 +80,74 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
       ShowHint = True
       TabOrder = 1
       OnClick = btnPesquisarClick
+      ExplicitLeft = 551
     end
   end
-  object GroupBox2: TGroupBox
+  object GbDados: TGroupBox
     Left = 0
     Top = 94
-    Width = 628
+    Width = 856
     Height = 348
     Align = alClient
     Caption = ' Resultados '
     TabOrder = 1
+    ExplicitWidth = 628
     object lstResultado: TListView
       Left = 2
       Top = 42
-      Width = 624
+      Width = 852
       Height = 304
       Align = alClient
       Columns = <
         item
           AutoSize = True
-          Caption = 'Resultado'
+          Caption = 'Cep'
+          MinWidth = 100
+        end
+        item
+          AutoSize = True
+          Caption = 'Uf'
+          MinWidth = 50
+        end
+        item
+          AutoSize = True
+          Caption = 'Localidade'
+          MinWidth = 100
+        end
+        item
+          AutoSize = True
+          Caption = 'Logradouro'
+          MinWidth = 100
+        end
+        item
+          AutoSize = True
+          Caption = 'Bairro'
+          MinWidth = 100
+        end
+        item
+          AutoSize = True
+          Caption = 'Complemento'
+          MinWidth = 100
+        end
+        item
+          AutoSize = True
+          Caption = 'Ddd'
+          MinWidth = 50
+        end
+        item
+          AutoSize = True
+          Caption = 'Gia'
+          MinWidth = 50
+        end
+        item
+          AutoSize = True
+          Caption = 'Ibge'
+          MinWidth = 50
+        end
+        item
+          AutoSize = True
+          Caption = 'Siafi'
+          MinWidth = 50
         end>
       ColumnClick = False
       FullDrag = True
@@ -109,16 +159,20 @@ object FrmConsultaEnderecos: TFrmConsultaEnderecos
       RowSelect = True
       TabOrder = 0
       ViewStyle = vsReport
+      ExplicitLeft = 226
+      ExplicitTop = 48
+      ExplicitWidth = 624
     end
     object btnCarregarDados: TButton
       Left = 2
       Top = 17
-      Width = 624
+      Width = 852
       Height = 25
       Align = alTop
       Caption = 'Carregar Dados'
       TabOrder = 1
       OnClick = btnCarregarDadosClick
+      ExplicitWidth = 624
     end
   end
 end

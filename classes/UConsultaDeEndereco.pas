@@ -4,7 +4,8 @@ interface
 
 uses
   URabbitMQ, UClientRequest, System.SysUtils, System.JSON, System.Variants,
-  System.Classes, Vcl.Dialogs, UDataBase;
+  System.Classes, Vcl.Dialogs, UDataBase, URetorno, REST.Json,
+  System.Generics.Collections;
 
 type
   rabbitMq = class(TRabbitMQ)
@@ -23,13 +24,12 @@ type
       const COLLECTION_NAME = 'enderecos';
       var
         filaRabbitMQ: rabbitMq;
-        teste: String;
       procedure PopularMensagemRecebidaNoDB(mensagem: String);
     public
-      procedure NotificarFalhaRequisicao; virtual;
       function SolicitarConsulta(filtroPesquisa: String): Boolean;
       function ExecutarConsulta(filtroPesquisa: String): Boolean;
       function RetornarDados(): TJSONArray;
+      function RetornarDadosListaObjetos(): TObjectList<TResultado>;
       constructor Create;
       destructor Destroy; override;
   End;
@@ -69,13 +69,8 @@ begin
     PopularMensagemRecebidaNoDB(retorno.ToString);
     result := true;
   end
-  else
+  else //TO DO - utilizar notify para notificar, deixando a classe mais independente de interface
     MessageDlg('Não foi possível encontrar registros com o filtro: ' + filtroComTratamento, mtInformation, [mbOk], 0);
-end;
-
-procedure TConsultaDeEndereco.NotificarFalhaRequisicao;
-begin
-  inherited;
 end;
 
 procedure TConsultaDeEndereco.PopularMensagemRecebidaNoDB(mensagem: String);
@@ -108,7 +103,41 @@ begin
     database.DesconectarDatabase;
     FreeAndNil(database);
   end;
+end;
 
+function TConsultaDeEndereco.RetornarDadosListaObjetos: TObjectList<TResultado>;
+var
+  retornoDB, propArray: TJsonArray;
+  i, x: Integer;
+  listaResultado: TObjectList<TResultado>;
+  jsonObj: TJSONObject;
+begin
+  try
+    retornoDB := RetornarDados;
+
+    listaResultado := TObjectList<TResultado>.Create;
+    for i := 0 to retornoDB.Size - 1 do
+    begin
+      try
+        listaResultado.Add(TJson.JsonToObject<TRetorno>(TJSONObject.ParseJSONValue(retornoDB.Get(i).Value) as TJSONObject).Resultado);
+      except
+        jsonObj  := TJSONObject.ParseJSONValue(retornoDB.Get(i).Value) as TJSONObject;
+        propArray := jsonObj.Get('resultado').JsonValue as TJSONArray;
+
+        for x := 0 to propArray.Size - 1 do
+        begin
+          listaResultado.Add(TJson.JsonToObject<TResultado>(TJSONObject.ParseJSONValue(propArray.Get(x).ToString) as TJSONObject));
+        end;
+      end;
+    end;
+
+    result := listaResultado;
+  except
+    on E: Exception do
+      begin
+        result := TObjectList<TResultado>.Create;
+      end;
+  end;
 end;
 
 function TConsultaDeEndereco.SolicitarConsulta(filtroPesquisa: String): Boolean;

@@ -110,6 +110,7 @@
         <DCCReference Include="features\StompClient.pas"/>
         <DCCReference Include="classes\UConsultaDeEndereco.pas"/>
         <DCCReference Include="classes\UHelpers.pas"/>
+        <DCCReference Include="classes\URetorno.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

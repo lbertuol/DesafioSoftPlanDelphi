@@ -18,6 +18,7 @@ type
         secaoConfiguracoes = 'RABBITMQ';
       var
         FStompFrameReceive: IStompFrame;
+
       property StompFrame: IStompFrame read FStompFrame write FStompFrame;
       property Client: IStompClient read FClient write FClient;
       property TimeOut: integer read FTimeOut write FTimeOut;

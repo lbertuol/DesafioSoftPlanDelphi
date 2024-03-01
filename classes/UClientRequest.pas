@@ -7,7 +7,6 @@ uses
 
 type
   TClienteRequest = Class
-    FURL: String;
     private
     public
       class function ExecutarGet(URL: String): TJSONObject;

@@ -5,16 +5,17 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
-  CommCtrl, Vcl.ExtCtrls, UConsultaDeEndereco, System.JSON;
+  CommCtrl, Vcl.ExtCtrls, UConsultaDeEndereco, System.JSON, URetorno,
+  REST.Json, System.Generics.Collections;
 
 type
   TFrmConsultaEnderecos = class(TForm)
-    Label1: TLabel;
-    GroupBox1: TGroupBox;
+    lblTitulo: TLabel;
+    GbPesquisa: TGroupBox;
     edtConteudoPesquisa: TEdit;
     btnPesquisar: TButton;
-    GroupBox2: TGroupBox;
-    Label2: TLabel;
+    GbDados: TGroupBox;
+    lblDica: TLabel;
     lstResultado: TListView;
     btnCarregarDados: TButton;
     procedure btnPesquisarClick(Sender: TObject);
@@ -62,22 +63,37 @@ end;
 
 procedure TFrmConsultaEnderecos.ConsultarDadosECarregarListView;
 var
-  records: TJSONArray;
   item: TListItem;
-  i: Integer;
+  retornoLista: TObjectList<TResultado>;
+  resultado: TResultado;
 begin
-  records := consultaDeEndereco.RetornarDados;
-
   lstResultado.Items.Clear;
-  for i := 0 to records.Size - 1 do
+
+  retornoLista := consultaDeEndereco.RetornarDadosListaObjetos;
+  for resultado in retornoLista do
   begin
-    lstResultado.Items.Insert(1).Caption := records.Get(i).ToString;
+    item := lstResultado.Items.Add;
+    item.Caption:= resultado.Cep;
+    item.SubItems.Add(resultado.Uf);
+    item.SubItems.Add(resultado.Localidade);
+    item.SubItems.Add(resultado.Logradouro);
+    item.SubItems.Add(resultado.Bairro);
+    item.SubItems.Add(resultado.Complemento);
+    item.SubItems.Add(resultado.Ddd);
+    item.SubItems.Add(resultado.Gia);
+    item.SubItems.Add(resultado.Ibge);
+    item.SubItems.Add(resultado.Siafi);
   end;
 end;
 
 procedure TFrmConsultaEnderecos.FormCreate(Sender: TObject);
+var
+  i: integer;
 begin
   consultaDeEndereco := TConsultaDeEndereco.Create;
+
+  for i := 0 to lstResultado.Columns.Count - 1 do
+    lstResultado.Columns[i].Width := LVSCW_AUTOSIZE or LVSCW_AUTOSIZE_USEHEADER;
 end;
 
 procedure TFrmConsultaEnderecos.FormDestroy(Sender: TObject);
